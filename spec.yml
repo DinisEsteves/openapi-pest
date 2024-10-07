@@ -1,0 +1,77 @@
+openapi: 3.0.0
+info:
+  title: User Registration API
+  description: API endpoint to register a new user.
+  version: 1.0.0
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                  description: The user's full name.
+                email:
+                  type: string
+                  format: email
+                  example: johndoe@example.com
+                  description: The user's email address.
+                password:
+                  type: string
+                  format: password
+                  example: secret_password123
+                  description: The user's password.
+                password_confirmation:
+                  type: string
+                  format: password
+                  example: secret_password123
+                  description: The password confirmation (must match the password).
+      responses:
+        '201':
+          description: User successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: John Doe
+                      email:
+                        type: string
+                        format: email
+                        example: johndoe@example.com
+        '422':
+          description: Unprocessable Entity (Validation Failed)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The password confirmation does not match.
+servers:
+  - url: http://openapi-pest.test/api
+    description: Local development server
